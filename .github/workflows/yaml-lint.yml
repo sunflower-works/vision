@@ -26,7 +26,7 @@ jobs:
       - name: Run actionlint (GitHub Actions YAML)
         run: |
           set -euxo pipefail
-          ./bin/actionlint -color -shellcheck= -pyflakes= ./
+          ./bin/actionlint -color -shellcheck= -pyflakes=
       - name: Install yamllint
         run: |
           sudo apt-get update -y
