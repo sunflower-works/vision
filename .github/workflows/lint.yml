@@ -27,4 +27,3 @@ jobs:
         with:
           version: latest
           install-mode: binary
-          args: --config .golangci.yml --timeout=3m
