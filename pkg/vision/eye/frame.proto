@@ -1,0 +1,13 @@
+syntax = "proto3";
+package eye;
+
+option go_package = "github.com/sunflower-works/vision/pkg/vision/eye;eye";
+
+// Frame is the JPEG container sent over MQTT.
+message Frame {
+  // Unix-epoch, monotonic
+  uint64 timestamp_ns = 1;
+  // Compressed image (≈ 70-100 KB @ 720p)
+  bytes  jpeg_data    = 2;
+}
+
