@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Lint
-on:
+"on":
   push:
     branches:
       - '**'
@@ -25,6 +25,7 @@ jobs:
         env:
           GOTOOLCHAIN: local
         with:
-          version: v2.4.0
-          install-mode: goinstall
+          version: v1.54.2
+          install-mode: binary
+          verify: false
           args: --config .golangci.yml --timeout=3m
