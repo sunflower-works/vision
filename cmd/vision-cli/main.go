@@ -24,7 +24,7 @@ func Run(args []string) error {
 		return err
 	}
 
-	cam, err := capture.Open(capture.WithWidth(*w), capture.WithHeight(*h), capture.WithFPS(*fps))
+	cam, err := capture.Open(*src, capture.WithWidth(*w), capture.WithHeight(*h), capture.WithFPS(*fps))
 	if err != nil {
 		return err
 	}

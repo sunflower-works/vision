@@ -13,12 +13,13 @@ import (
 func Run(args []string) error {
 	fs := flag.NewFlagSet("thumbnailer", flag.ContinueOnError)
 	fs.SetOutput(os.Stderr)
+	in := fs.String("src", "", "input (camera id or file, empty = synthetic)")
 	out := fs.String("out", "thumb.jpg", "output JPEG path")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
 
-	src, err := capture.Open(capture.WithWidth(320), capture.WithHeight(180), capture.WithFPS(1))
+	src, err := capture.Open(*in, capture.WithWidth(320), capture.WithHeight(180), capture.WithFPS(1))
 	if err != nil {
 		return err
 	}
