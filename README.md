@@ -1,6 +1,8 @@
 # sunflower-vision
 
 [![CI](https://github.com/sunflower-works/vision/actions/workflows/ci.yml/badge.svg)](https://github.com/sunflower-works/vision/actions/workflows/ci.yml)
+[![Lint](https://github.com/sunflower-works/vision/actions/workflows/lint.yml/badge.svg)](https://github.com/sunflower-works/vision/actions/workflows/lint.yml)
+[![Coverage](https://img.shields.io/badge/coverage-auto--generated-blue)](https://github.com/sunflower-works/vision/actions/workflows/ci.yml)
 
 A small, composable computer vision toolkit that complements the sunflower SDK.
 
@@ -11,8 +13,11 @@ A small, composable computer vision toolkit that complements the sunflower SDK.
 Quick start:
 
 ```bash
-cd vision
+# From repo root
+# Run the demo CLI (synthetic source by default)
 go run ./cmd/vision-cli
+# Write a thumbnail from the first frame
+go run ./cmd/thumbnailer -out /tmp/thumb.jpg
 ```
 
 This uses a synthetic source by default (animated bar). Use `-src` for a file or camera id (to be wired later).
@@ -28,7 +33,11 @@ This uses a synthetic source by default (animated bar). Use `-src` for a file or
 
 ## CI
 
-See `.github/workflows/ci.yml` for a minimal Go vet + test matrix (Linux/macOS).
+See `.github/workflows/ci.yml` for test matrix and coverage; lint in `.github/workflows/lint.yml`.
+
+## Contributing
+
+Contributions are welcome! Please read the guidelines in [CONTRIBUTING.md](CONTRIBUTING.md). By participating, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
