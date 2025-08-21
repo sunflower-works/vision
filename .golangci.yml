@@ -1,3 +1,4 @@
+version: 2
 run:
   timeout: 3m
   issues-exit-code: 1
@@ -7,10 +8,7 @@ linters:
     - govet
     - staticcheck
     - errcheck
-    - gofmt
-    - goimports
     - ineffassign
-    - typecheck
     - unused
   disable:
     - revive  # enable later when public docs stabilize
@@ -23,4 +21,3 @@ issues:
   exclude-use-default: false
   max-issues-per-linter: 0
   max-same-issues: 0
-
