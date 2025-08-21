@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: YAML Lint
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  workflow_dispatch: { }
+permissions:
+  contents: read
+
+jobs:
+  lint-yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install actionlint
+        run: |
+          set -euxo pipefail
+          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash -s -- -b ./bin
+          ./bin/actionlint --version
+      - name: Run actionlint (GitHub Actions YAML)
+        run: |
+          set -euxo pipefail
+          ./bin/actionlint -color -shellcheck= -pyflakes= ./
+      - name: Install yamllint
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y yamllint
+          yamllint --version
+      - name: Run yamllint (all YAML)
+        run: |
+          yamllint -c .yamllint.yml .
+
