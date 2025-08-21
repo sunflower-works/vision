@@ -7,7 +7,7 @@ name: CI
   pull_request:
     branches:
       - '**'
-  workflow_dispatch: { }
+  workflow_dispatch: {}
 permissions:
   contents: read
   actions: write

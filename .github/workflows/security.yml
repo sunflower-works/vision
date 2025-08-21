@@ -7,7 +7,7 @@ name: Security
   pull_request:
     branches:
       - '**'
-  workflow_dispatch: { }
+  workflow_dispatch: {}
   schedule:
     - cron: '0 3 * * 1'
 permissions:

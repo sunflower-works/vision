@@ -7,7 +7,7 @@ name: Lint
   pull_request:
     branches:
       - '**'
-  workflow_dispatch: { }
+  workflow_dispatch: {}
 permissions:
   contents: read
 
