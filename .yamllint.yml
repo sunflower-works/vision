@@ -1,0 +1,21 @@
+extends: default
+rules:
+  document-start: disable
+  line-length:
+    max: 200
+    level: warning
+  truthy: enable
+  indentation:
+    indent-sequences: consistent
+    check-multi-line-strings: false
+  trailing-spaces: enable
+  new-line-at-end-of-file: enable
+  comments:
+    min-spaces-from-content: 1
+ignore: |
+  # Ignore vendored or generated dirs if present
+  vendor/
+  node_modules/
+  dist/
+  bin/
+
