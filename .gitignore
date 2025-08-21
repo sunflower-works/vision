@@ -1,0 +1,20 @@
+# Build artifacts
+coverage.out
+bin/
+dist/
+tmp/
+*.log
+
+# OS cruft
+.DS_Store
+
+# IDE (global)
+.idea/
+!.idea/.gitignore
+!.idea/modules.xml
+!.idea/vcs.xml
+!.idea/sunflower-vision.iml
+
+# Editors
+.vscode/
+
