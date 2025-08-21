@@ -1,5 +1,7 @@
 # sunflower-vision
 
+[![CI](https://github.com/sunflower-works/vision/actions/workflows/ci.yml/badge.svg)](https://github.com/sunflower-works/vision/actions/workflows/ci.yml)
+
 A small, composable computer vision toolkit that complements the sunflower SDK.
 
 - Public API under `pkg/vision` (capture, pipeline, model, draw)
@@ -31,4 +33,3 @@ See `.github/workflows/ci.yml` for a minimal Go vet + test matrix (Linux/macOS).
 ## License
 
 MIT
-
