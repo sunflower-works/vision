@@ -3,6 +3,8 @@ on:
   push:
     branches: [ main ]
   pull_request: {}
+permissions:
+  contents: read
 
 jobs:
   golangci:
@@ -17,4 +19,3 @@ jobs:
         with:
           version: v1.60.3
           args: --timeout=3m
-
