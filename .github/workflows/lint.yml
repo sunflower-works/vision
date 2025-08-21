@@ -25,7 +25,6 @@ jobs:
         env:
           GOTOOLCHAIN: local
         with:
-          version: v2.0.0
+          version: v2.4.0
           install-mode: goinstall
-          verify: false
           args: --config .golangci.yml --timeout=3m
