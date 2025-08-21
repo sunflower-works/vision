@@ -24,11 +24,18 @@ func Run(args []string) error {
 		return err
 	}
 
-	cam, err := capture.Open(*src, capture.WithWidth(*w), capture.WithHeight(*h), capture.WithFPS(*fps))
+	cam, err := capture.Open(capture.WithWidth(*w), capture.WithHeight(*h), capture.WithFPS(*fps))
 	if err != nil {
 		return err
 	}
-	defer cam.Close()
+	defer func(cam capture.Source) {
+		err := cam.Close()
+		if err != nil {
+			log.Printf("error closing source: %v", err)
+		} else {
+			log.Printf("source closed successfully")
+		}
+	}(cam)
 
 	pipe := pipeline.New().WithFPS().WithEdgeDetector()
 
