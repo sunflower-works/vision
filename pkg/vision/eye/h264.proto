@@ -1,0 +1,15 @@
+syntax = "proto3";
+package eye;
+
+option go_package = "github.com/sunflower-works/vision/pkg/vision/eye;eye";
+
+// H264Chunk carries one start-code-prefixed NAL unit and metadata.
+message H264Chunk {
+  // Capture time of the first frame carried (Unix-epoch, monotonic)
+  uint64 timestamp_ns = 1;
+  // Complete start-code-prefixed NAL unit
+  bytes  nal          = 2;
+  // true for IDR (type-5) or SPS/PPS NALs
+  bool   keyframe     = 3;
+}
+
