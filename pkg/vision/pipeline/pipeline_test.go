@@ -8,11 +8,11 @@ import (
 )
 
 func TestPipelineRunCountsFrames(t *testing.T) {
-	src, err := capture.Open(capture.WithFPS(10))
+	src, err := capture.Open("", capture.WithFPS(10))
 	if err != nil {
 		t.Fatalf("open: %v", err)
 	}
-	defer src.Close()
+	t.Cleanup(func() { _ = src.Close() })
 
 	p := pipeline.New().WithFPS().WithEdgeDetector()
 	n, err := p.Run(src)
