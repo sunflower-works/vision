@@ -1,0 +1,5 @@
+# CODEOWNERS
+# Define owners for critical GitHub workflow automation.
+
+/.github/workflows/ @sunflower-works/ @bilalobe
+
