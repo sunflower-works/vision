@@ -32,6 +32,7 @@ This uses a synthetic source by default (animated bar). Use `-src` for a file or
 - assets/, testdata/: small fixtures and golden files
 
 ## CI
+All validation (tests, coverage, lint, CodeQL, govuln, YAML lint) runs in a single aggregated workflow: `.github/workflows/ci.yml`. Release tagging uses `release.yml` (manual dispatch).
 
 See `.github/workflows/ci.yml` for test matrix and coverage; lint in `.github/workflows/lint.yml`.
 
