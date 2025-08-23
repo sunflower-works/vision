@@ -1,29 +1,18 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# Delegator: central-ci go-lint workflow
 name: Lint
-"on":
+on:
   push:
-    branches:
-      - '**'
+    branches: ['**']
   pull_request:
-    branches:
-      - '**'
+    branches: ['**']
   workflow_dispatch: {}
 permissions:
   contents: read
-
 jobs:
-  golangci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.24'
-          check-latest: true
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
-        env:
-          GOTOOLCHAIN: local
-        with:
-          version: latest
-          install-mode: binary
+  lint:
+    uses: sunflower-works/central-ci/.github/workflows/go-lint.yml@v1
+    with:
+      go-version: '1.24'
+      golangci-version: 'latest'
+      run-staticcheck: 'false'

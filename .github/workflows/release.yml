@@ -1,0 +1,17 @@
+# Delegator workflow: uses central-ci reusable release workflow
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to create (e.g. v0.2.0)"
+        required: true
+jobs:
+  release:
+    uses: sunflower-works/central-ci/.github/workflows/release.yml@v1
+    with:
+      tag: ${{ inputs.tag }}
+      run-tests: 'true'
+      generate-release: 'true'
+      release-notes: ''
+

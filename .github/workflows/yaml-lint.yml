@@ -1,37 +1,18 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# Delegator: central-ci yaml-lint workflow
 name: YAML Lint
-"on":
+on:
   push:
-    branches:
-      - '**'
+    branches: ['**']
   pull_request:
-    branches:
-      - '**'
+    branches: ['**']
   workflow_dispatch: {}
 permissions:
   contents: read
-
 jobs:
-  lint-yaml:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install actionlint
-        run: |
-          set -euxo pipefail
-          mkdir -p ./bin
-          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash -s -- latest ./bin
-          ./bin/actionlint --version
-      - name: Run actionlint (GitHub Actions YAML)
-        run: |
-          set -euxo pipefail
-          ./bin/actionlint -color -shellcheck= -pyflakes=
-      - name: Install yamllint
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y yamllint
-          yamllint --version
-      - name: Run yamllint (all YAML)
-        run: |
-          yamllint -c .yamllint.yml .
+  yaml-lint:
+    uses: sunflower-works/central-ci/.github/workflows/yaml-lint.yml@v1
+    with:
+      actionlint-version: 'latest'
+      yamllint: 'true'
+      yamllint-config: '.yamllint.yml'
