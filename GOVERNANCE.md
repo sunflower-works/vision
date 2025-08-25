@@ -13,5 +13,3 @@ Local scope:
 - Decisions specific to this codebase (API changes, release cadence) are discussed via GitHub Issues / PRs and follow org escalation if consensus is not reached.
 - Versioning: Pre-v1 experimental; expect breaking changes. Semantic versioning will apply starting with v1.0.0 of the extracted `vision-core` (future plan).
 
-If a governance concern appears unaddressed here, escalate using the organization channels rather than adding ad-hoc local policy.
-
