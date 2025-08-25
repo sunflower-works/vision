@@ -1,8 +1,8 @@
 package capture
 
 import (
-	"sync"
 	"strings"
+	"sync"
 )
 
 // Factory creates a Source for a given src string and resolved Config.
@@ -10,7 +10,7 @@ import (
 type Factory func(src string, cfg Config) (Source, error)
 
 var (
-	regMu   sync.RWMutex
+	regMu     sync.RWMutex
 	factories = map[string]Factory{}
 )
 
@@ -20,7 +20,8 @@ func Register(scheme string, f Factory) {
 	if scheme == "" {
 		panic("capture: empty scheme in Register")
 	}
-	regMu.Lock(); defer regMu.Unlock()
+	regMu.Lock()
+	defer regMu.Unlock()
 	if _, exists := factories[scheme]; exists {
 		panic("capture: duplicate register for scheme: " + scheme)
 	}
@@ -29,12 +30,15 @@ func Register(scheme string, f Factory) {
 
 // Unregister removes a scheme; intended for tests / dynamic reconfiguration.
 func Unregister(scheme string) {
-	regMu.Lock(); defer regMu.Unlock()
+	regMu.Lock()
+	defer regMu.Unlock()
 	delete(factories, scheme)
 }
 
 func lookupFactory(src string) Factory {
-	if src == "" { return nil }
+	if src == "" {
+		return nil
+	}
 	// Basic scheme parsing: scheme:// or scheme: (first form preferred)
 	scheme := ""
 	if i := strings.Index(src, "://"); i > 0 {
@@ -42,8 +46,10 @@ func lookupFactory(src string) Factory {
 	} else if i := strings.IndexByte(src, ':'); i > 0 {
 		scheme = src[:i]
 	}
-	if scheme == "" { return nil }
-	regMu.RLock(); defer regMu.RUnlock()
+	if scheme == "" {
+		return nil
+	}
+	regMu.RLock()
+	defer regMu.RUnlock()
 	return factories[scheme]
 }
-
