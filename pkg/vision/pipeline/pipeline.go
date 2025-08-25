@@ -1,45 +1,99 @@
 package pipeline
 
 import (
+	"image"
 	"io"
 	"time"
 
 	"github.com/sunflower-works/vision/pkg/vision/capture"
 )
 
+type Processor interface {
+	Process(image.Image) (image.Image, error)
+}
+
+type ProcessorFunc func(image.Image) (image.Image, error)
+
+func (f ProcessorFunc) Process(img image.Image) (image.Image, error) { return f(img) }
+
+// ProcessorFactory creates a Processor given a config map (reserved for future use).
+type ProcessorFactory func() Processor
+
+// Registry for processors (edge, fps overlay, etc.)
+var procRegistry = map[string]ProcessorFactory{}
+
+// RegisterProcessor registers a named processor factory (panics on duplicate).
+func RegisterProcessor(name string, f ProcessorFactory) {
+	if name == "" {
+		panic("pipeline: empty processor name")
+	}
+	if _, exists := procRegistry[name]; exists {
+		panic("pipeline: duplicate processor: " + name)
+	}
+	procRegistry[name] = f
+}
+
+// GetProcessor retrieves a registered processor factory (nil if absent).
+func GetProcessor(name string) ProcessorFactory { return procRegistry[name] }
+
+// Built-in processors
+func init() {
+	RegisterProcessor("edge", func() Processor {
+		return ProcessorFunc(func(img image.Image) (image.Image, error) {
+			return img, nil
+		})
+	})
+	RegisterProcessor("fps", func() Processor {
+		return ProcessorFunc(func(img image.Image) (image.Image, error) {
+			return img, nil
+		})
+	})
+}
+
 type Pipeline struct {
-	withFPS  bool
-	withEdge bool
+	processors []Processor
 }
 
 func New() *Pipeline { return &Pipeline{} }
 
-func (p *Pipeline) WithFPS() *Pipeline          { p.withFPS = true; return p }
-func (p *Pipeline) WithEdgeDetector() *Pipeline { p.withEdge = true; return p }
+// WithFPS adds (placeholder) fps overlay processor.
+func (p *Pipeline) WithFPS() *Pipeline {
+	if f := GetProcessor("fps"); f != nil {
+		p.processors = append(p.processors, f())
+	}
+	return p
+}
 
-// Run pulls frames from the source until EOF and returns the total count.
-// This skeleton doesn't perform actual image processing yet; it simulates
-// work and optional FPS tracking.
+// WithEdgeDetector adds a placeholder edge detector.
+func (p *Pipeline) WithEdgeDetector() *Pipeline {
+	if f := GetProcessor("edge"); f != nil {
+		p.processors = append(p.processors, f())
+	}
+	return p
+}
+
+// Run pulls frames, applies processors sequentially, counts frames.
 func (p *Pipeline) Run(src capture.Source) (int, error) {
 	defer func() { _ = src.Close() }()
 	var frames int
-	start := time.Now()
+	start := time.Now() // retained for potential fps logic
+	_ = start
 	for {
-		_, err := src.Next()
+		img, err := src.Next()
 		if err == io.EOF {
 			break
 		}
 		if err != nil {
 			return frames, err
 		}
+		for _, pr := range p.processors {
+			img, err = pr.Process(img)
+			if err != nil {
+				return frames, err
+			}
+		}
+		_ = img // ignore transformed image for now
 		frames++
-		// Simulate light processing cost for edge detector
-		if p.withEdge {
-			_ = frames % 2 // no-op branch to keep the compiler honest
-		}
-		if p.withFPS && frames%100 == 0 {
-			_ = time.Since(start) // placeholder for future FPS overlay
-		}
 	}
 	return frames, nil
 }
