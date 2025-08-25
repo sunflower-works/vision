@@ -4,7 +4,7 @@
 // Planned repository split:
 //   - In a future extraction the stable, lightweight components (including this
 //     interface and the synthetic source) will move to a new module:
-//       github.com/sunflower-works/vision-core/pkg/vision/capture
+//     github.com/sunflower-works/vision-core/pkg/vision/capture
 //   - Heavier / optional backends (camera hardware, file/rtsp, ffmpeg, GPU) are
 //     expected to reside in a sibling module (e.g. vision-capture-extra) and
 //     register themselves via capture.Register.
@@ -21,4 +21,3 @@
 // NOTE: If you vendor today, be ready to update import paths once the split
 // lands. Track REPO_SPLIT_PLAN.md for progress.
 package capture
-

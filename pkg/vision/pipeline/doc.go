@@ -1,6 +1,7 @@
 // Package pipeline defines a simple frame processing pipeline and an
 // extensible registry for image Processors. Current module path:
-//   github.com/sunflower-works/vision/pkg/vision/pipeline
+//
+//	github.com/sunflower-works/vision/pkg/vision/pipeline
 //
 // Planned split (see REPO_SPLIT_PLAN.md):
 //   - Core abstractions (Pipeline, Processor interface, registration helpers)
@@ -18,4 +19,3 @@
 // Stability: Experimental (< v0.2). Public API may evolve; core concepts (Source
 // feeding Pipeline of Processors) are intended to stabilize before v0.5.
 package pipeline
-
