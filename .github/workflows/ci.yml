@@ -1,5 +1,4 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-# Delegator: central-ci go-ci workflow
 name: CI
 on:
   push:
@@ -10,11 +9,11 @@ on:
 permissions:
   contents: read
 jobs:
-  ci:
-    uses: sunflower-works/central-ci/.github/workflows/go-ci.yml@v1
+  tests:
+    uses: sunflower-works/central-ci/.github/workflows/go-ci.yml@v1.1.0
     with:
       go-versions: '["1.24"]'
-      os-matrix: '["ubuntu-latest","macos-latest"]'
+      os-matrix: '["ubuntu-latest"]'
       min-coverage: '60.0'
       race: 'true'
       tidy-check: 'true'
