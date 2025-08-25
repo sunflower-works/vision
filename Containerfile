@@ -30,7 +30,7 @@ FROM scratch AS runtime
 # Certificates & timezone
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
-# Binary
+# Binary; normalize to /usr/local/bin/app so entrypoint uniform across BIN variants
 ARG BIN=vision-cli
 ARG VERSION=dev
 ARG BUILD_DATE
@@ -42,8 +42,6 @@ LABEL org.opencontainers.image.title="sunflower-vision" \
       org.opencontainers.image.revision="${GIT_SHA}" \
       org.opencontainers.image.source="https://github.com/sunflower-works/vision" \
       org.opencontainers.image.licenses="MIT"
-COPY --from=builder /out/${BIN} /usr/local/bin/${BIN}
-ENTRYPOINT ["/usr/local/bin/vision-cli"]
-# Allow overriding cmd if running different binary via image-build target
+COPY --from=builder /out/${BIN} /usr/local/bin/app
+ENTRYPOINT ["/usr/local/bin/app"]
 CMD []
-
