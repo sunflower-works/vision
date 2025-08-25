@@ -6,7 +6,10 @@ PKG := ./...
 MODULE := github.com/sunflower-works/vision
 VERSION_FILE := pkg/vision/version/version.go
 
-.PHONY: all proto generate test race cover lint vet fmt tidy ci release-check version bump-patch
+# Include optional container targets (Podman/Docker) if present
+-include mk/container.mk
+
+.PHONY: all proto generate test race cover lint vet fmt tidy ci release-check version bump-patch help bench
 
 all: test
 
@@ -57,5 +60,21 @@ bump-patch:
 	@curr=$$(grep -Eo 'v[0-9]+\.[0-9]+\.[0-9]+' $(VERSION_FILE)); \
 	major=$$(echo $$curr|cut -d. -f1); minor=$$(echo $$curr|cut -d. -f2); patch=$$(echo $$curr|cut -d. -f3); \
 	new=$${major}.$${minor}.$$((patch+1)); \
-	sed -i "s/const Version = \"$$curr\"/const Version = \"$$new\"/" $(VERSION_FILE); \
+	sed -i "s/Version = \"$$curr\"/Version = \"$$new\"/" $(VERSION_FILE); \
 	echo "Bumped $$curr -> $$new";
+
+help:
+	@echo 'Common targets:'
+	@echo '  make test            Run tests'
+	@echo '  make cover           Coverage'
+	@echo '  make fmt vet tidy    Hygiene'
+	@echo '  make bump-patch      Increment patch version'
+	@echo '  make image-build BIN=vision-cli   Build CPU container (Podman/Docker)'
+	@echo '  make image-build BIN=vision-cli GPU=1   Build GPU container (linux/amd64, CUDA)'
+	@echo '  make image-run BIN=vision-cli ARGS="-h"  Run container binary'
+	@echo '  make image-run BIN=vision-cli GPU=1      Run GPU container (requires nvidia toolkit)'
+	@echo '  make image-build-all        Build images for all BINARIES (CPU)'
+	@echo '  make image-build-all GPU=1  Build GPU images for all BINARIES'
+	@echo '  make image-push-all         Push all CPU images'
+	@echo '  make image-push-all GPU=1   Push all GPU images'
+	@echo '  make bench           Run benchmarks'
