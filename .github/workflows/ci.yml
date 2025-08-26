@@ -1,50 +1,20 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: CI
-"on":
+on:
   push:
-    branches:
-      - '**'
+    branches: ['**']
   pull_request:
-    branches:
-      - '**'
+    branches: ['**']
   workflow_dispatch: {}
 permissions:
   contents: read
-  actions: write
-
 jobs:
-  test:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        go: ['1.24']
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: ${{ matrix.go }}
-      - name: Cache Go modules and build cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
-      - name: Ensure tidy
-        run: |
-          go mod tidy
-          git diff --exit-code go.mod go.sum
-      - name: Vet
-        run: go vet ./...
-      - name: Test (race, coverage)
-        run: go test -race -count=1 -covermode=atomic -coverprofile=coverage.out ./...
-      - name: Coverage summary
-        run: go tool cover -func=coverage.out | tail -n1
-      - name: Enforce coverage threshold
-        env:
-          MIN_COVERAGE: "60.0"
-        run: |
-          total=$(go tool cover -func=coverage.out | awk '/^total:/ {print $3}' | sed 's/%//')
-          echo "Total coverage: ${total}% (min ${MIN_COVERAGE}%)"
-          awk -v a="$total" -v b="$MIN_COVERAGE" 'BEGIN { exit(a<b) }'
+  tests:
+    uses: sunflower-works/central-ci/.github/workflows/go-ci.yml@v1.1.0
+    with:
+      go-versions: '["1.24"]'
+      os-matrix: '["ubuntu-latest"]'
+      min-coverage: '60.0'
+      race: 'true'
+      tidy-check: 'true'
+      coverage: 'true'
